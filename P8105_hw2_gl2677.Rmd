@@ -48,3 +48,12 @@ prec_2018 =
 #Join 2017 and 2018 percipitation
 prec_2017_2018 = bind_rows(prec_2017 , prec_2018) 
 ```
+
+#### Interpretation
+There are `r nrow(mr_trash_wheel)` observations and `r ncol(mr_trash_wheel)` variables in `mr_trash_wheel` dataset. 
+The key variables are `r colnames(mr_trash_wheel[5:14])`. 
+The median number of sports balls in a dumpster in 2017 was `r median(pull(filter(mr_trash_wheel, year == "2017"), sports_balls))`.
+
+There are `r nrow(prec_2017_2018)` observations and `r ncol(prec_2017_2018)` variables in `prec_2017_2018` dataset. 
+The key variables are `r colnames(prec_2017_2018[2])`. 
+The total precipitation in 2018 was `r sum(pull(filter(prec_2017_2018, year == "2018"), total))`.
