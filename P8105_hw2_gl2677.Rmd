@@ -57,3 +57,18 @@ The median number of sports balls in a dumpster in 2017 was `r median(pull(filte
 There are `r nrow(prec_2017_2018)` observations and `r ncol(prec_2017_2018)` variables in `prec_2017_2018` dataset. 
 The key variables are `r colnames(prec_2017_2018[2])`. 
 The total precipitation in 2018 was `r sum(pull(filter(prec_2017_2018, year == "2018"), total))`.
+
+## Problem 2
+#### Read and clean pols_month data
+```{r , message=FALSE}
+pols_month = 
+  read_csv("./data/pols-month.csv") %>% 
+  separate(mon, into = c("year","month","day"), sep = "-") %>% 
+  mutate(year = as.numeric(year),
+         month = as.numeric(month),
+         month = month.name[month],
+         president = factor(prez_gop, 
+                            levels = c("gop"  = 0, "dem" = 1),
+                            labels = c("gop","dem"))) %>% 
+  select(-day, -prez_gop, -prez_dem)
+```
