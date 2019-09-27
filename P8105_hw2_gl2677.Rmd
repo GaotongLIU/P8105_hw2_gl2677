@@ -1,0 +1,12 @@
+---
+title: "P8105_hw2_gl2677"
+author: "Gaotong LIU"
+date: "9/26/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(readxl)
+library(ggrepel)
+```
