@@ -124,3 +124,14 @@ baby_names =
          childs_first_name = str_to_lower(childs_first_name)) %>% 
   distinct() 
 ```
+
+#### Rank of olivia over time
+```{r}
+folivia = baby_names %>% 
+  filter(childs_first_name == "olivia" & gender == "female") %>% 
+  select(-childs_first_name, -gender, -count) %>% 
+  pivot_wider(names_from = "year_of_birth",
+              values_from = "rank") %>% 
+  knitr::kable()
+folivia
+```
