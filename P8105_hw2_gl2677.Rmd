@@ -135,3 +135,15 @@ folivia = baby_names %>%
   knitr::kable()
 folivia
 ```
+
+#### Name of rank first over time
+```{r}
+mrank = baby_names %>% 
+  filter(rank == 1 & gender == "male") %>% 
+  select(-rank, -gender, -count) %>% 
+  mutate(childs_first_name = str_to_title(childs_first_name)) %>% 
+  pivot_wider(names_from = "year_of_birth",
+              values_from = "childs_first_name") %>% 
+  knitr::kable()
+mrank
+```
