@@ -99,3 +99,16 @@ unemployment =
 pols_snp = left_join(pols_month, snp, by = c("year","month")) 
 pols_snp_unemp = left_join(pols_snp, unemployment, by = c("year","month"))
 ```
+
+#### Interpretation
+There are `r nrow(pols_month)` observations and `r ncol(pols_month)` variables in `pols_month` dataset. This dataset shows the president's political party and the number of national politicians who are democratic or republican at any given time.
+The key variables are `r colnames(pols_month[3:7])`. The range of year is from `r min(pull(pols_month, year))` to `r max(pull(pols_month, year))`.
+
+There are `r nrow(snp)` observations and `r ncol(snp)` variables in `snp` dataset. This dataset is related to Standard & Poor’s stock market index (S&P) at any given time.
+The key variables are `r colnames(snp[3])`. The range of year is from `r min(pull(snp, year))` to `r max(pull(snp, year))`.
+
+There are `r nrow(unemployment)` observations and `r ncol(unemployment)` variables in `unemployment` dataset. This dataset shows unemployment percentage at any given time.
+The key variables are `r colnames(unemployment[3])`. The range of year is from `r min(pull(unemployment, year))` to `r max(pull(unemployment, year))`.
+
+There are `r nrow(pols_snp_unemp)` observations and `r ncol(pols_snp_unemp[3:11])` variables in `pols_snp_unemp` **resulting dataset**. 
+The key variables are `r colnames(pols_snp_unemp[3:11])`. The range of year is from `r min(pull(pols_snp_unemp, year))` to `r max(pull(pols_snp_unemp, year))`.
