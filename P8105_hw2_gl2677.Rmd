@@ -147,3 +147,16 @@ mrank = baby_names %>%
   knitr::kable()
 mrank
 ```
+
+#### Scatterplot
+```{r}
+baby_names %>% 
+  filter(gender == "male" & ethnicity == "white non hispanic" & year_of_birth == "2016") %>% 
+  mutate(childs_first_name = str_to_title(childs_first_name)) %>% 
+  ggplot(aes(x = rank, y = count)) +
+  geom_point(alpha = 0.5) + 
+  geom_text_repel(aes(label = ifelse(rank <= 15, as.character(childs_first_name),'')),
+                  box.padding   = 0.5,
+                  point.padding = 0.5)
+
+```
