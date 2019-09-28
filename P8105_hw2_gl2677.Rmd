@@ -3,9 +3,12 @@ title: "P8105_hw2_gl2677"
 author: "Gaotong LIU"
 date: "9/26/2019"
 output: github_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
+# install.packages("ggrepel")
 library(tidyverse)
 library(readxl)
 library(ggrepel)
@@ -50,12 +53,12 @@ prec_2017_2018 = bind_rows(prec_2017 , prec_2018)
 ```
 
 #### Interpretation
-There are `r nrow(mr_trash_wheel)` observations and `r ncol(mr_trash_wheel)` variables in `mr_trash_wheel` dataset. 
-The key variables are `r colnames(mr_trash_wheel[5:14])`. 
+There are `r nrow(mr_trash_wheel)` observations and `r ncol(mr_trash_wheel)` variables in `mr_trash_wheel` dataset. This dataset has the information on the dumpter number, date of collection, amount of total litter (weight and volume), litter type and the number of homes powered by trash. In my opinion, the amount of total litter, litter type and homes powered are most important.
+The key variables are ``r colnames(mr_trash_wheel[5:14])``. 
 The median number of sports balls in a dumpster in 2017 was `r median(pull(filter(mr_trash_wheel, year == "2017"), sports_balls))`.
 
-There are `r nrow(prec_2017_2018)` observations and `r ncol(prec_2017_2018)` variables in `prec_2017_2018` dataset. 
-The key variables are `r colnames(prec_2017_2018[2])`. 
+There are `r nrow(prec_2017_2018)` observations and `r ncol(prec_2017_2018)` variables in `prec_2017_2018` dataset. This dataset shows the total precipitation in the corresponding month and year.
+The key variables are ``r colnames(prec_2017_2018[2])``. 
 The total precipitation in 2018 was `r sum(pull(filter(prec_2017_2018, year == "2018"), total))`.
 
 ## Problem 2
@@ -67,8 +70,8 @@ pols_month =
   mutate(year = as.numeric(year),
          month = as.numeric(month),
          month = month.name[month],
-         president = factor(prez_gop, 
-                            levels = c("gop"  = 0, "dem" = 1),
+         president = factor(prez_dem, 
+                            levels = c("gop"  = 1, "dem" = 0),
                             labels = c("gop","dem"))) %>% 
   select(-day, -prez_gop, -prez_dem)
 ```
@@ -102,16 +105,16 @@ pols_snp_unemp = left_join(pols_snp, unemployment, by = c("year","month"))
 
 #### Interpretation
 There are `r nrow(pols_month)` observations and `r ncol(pols_month)` variables in `pols_month` dataset. This dataset shows the president's political party and the number of national politicians who are democratic or republican at any given time.
-The key variables are `r colnames(pols_month[3:7])`. The range of year is from `r min(pull(pols_month, year))` to `r max(pull(pols_month, year))`.
+The key variables are ``r colnames(pols_month[3:9])``. The range of year is from `r min(pull(pols_month, year))` to `r max(pull(pols_month, year))`.
 
 There are `r nrow(snp)` observations and `r ncol(snp)` variables in `snp` dataset. This dataset is related to Standard & Poor’s stock market index (S&P) at any given time.
-The key variables are `r colnames(snp[3])`. The range of year is from `r min(pull(snp, year))` to `r max(pull(snp, year))`.
+The key variables are ``r colnames(snp[3])``. The range of year is from `r min(pull(snp, year))` to `r max(pull(snp, year))`.
 
 There are `r nrow(unemployment)` observations and `r ncol(unemployment)` variables in `unemployment` dataset. This dataset shows unemployment percentage at any given time.
-The key variables are `r colnames(unemployment[3])`. The range of year is from `r min(pull(unemployment, year))` to `r max(pull(unemployment, year))`.
+The key variables are ``r colnames(unemployment[3])``. The range of year is from `r min(pull(unemployment, year))` to `r max(pull(unemployment, year))`.
 
-There are `r nrow(pols_snp_unemp)` observations and `r ncol(pols_snp_unemp[3:11])` variables in `pols_snp_unemp` **resulting dataset**. 
-The key variables are `r colnames(pols_snp_unemp[3:11])`. The range of year is from `r min(pull(pols_snp_unemp, year))` to `r max(pull(pols_snp_unemp, year))`.
+There are `r nrow(pols_snp_unemp)` observations and `r ncol(pols_snp_unemp)` variables in `pols_snp_unemp` **resulting dataset**. 
+The key variables are ``r colnames(pols_snp_unemp[3:11])``. The range of year is from `r min(pull(pols_snp_unemp, year))` to `r max(pull(pols_snp_unemp, year))`.
 
 ## Problem 3
 #### Read and clean baby_names data
@@ -121,7 +124,8 @@ baby_names =
   janitor::clean_names() %>% 
   mutate(gender = str_to_lower(gender),
          ethnicity = str_to_lower(ethnicity),
-         childs_first_name = str_to_lower(childs_first_name)) %>% 
+         childs_first_name = str_to_lower(childs_first_name),
+         ethnicity = recode(ethnicity, `asian and paci` = "asian and pacific islander", `black non hisp` = "black non hispanic", `white non hisp` = "white non hispanic")) %>% 
   distinct() 
 ```
 
@@ -132,7 +136,7 @@ folivia = baby_names %>%
   select(-childs_first_name, -gender, -count) %>% 
   pivot_wider(names_from = "year_of_birth",
               values_from = "rank") %>% 
-  knitr::kable()
+  knitr::kable(caption = "Table 1. The rank in popularity of the name “Olivia” as a female baby name over time.")
 folivia
 ```
 
@@ -144,7 +148,7 @@ mrank = baby_names %>%
   mutate(childs_first_name = str_to_title(childs_first_name)) %>% 
   pivot_wider(names_from = "year_of_birth",
               values_from = "childs_first_name") %>% 
-  knitr::kable()
+  knitr::kable(caption = "Table 2. The most popular name among male children over time.")
 mrank
 ```
 
@@ -157,6 +161,9 @@ baby_names %>%
   geom_point(alpha = 0.5) + 
   geom_text_repel(aes(label = ifelse(rank <= 15, as.character(childs_first_name),'')),
                   box.padding   = 0.5,
-                  point.padding = 0.5)
+                  point.padding = 0.5) +
+  labs(title = "Figure 1. The number of children with a name against the rank in popularity ",
+          subtitle = "for male, white non-hispanic children born in 2016") +
+  theme(plot.subtitle = element_text(hjust = 0.5))
 
 ```
