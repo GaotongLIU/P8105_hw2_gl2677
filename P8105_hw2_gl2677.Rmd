@@ -18,9 +18,9 @@ library(ggrepel)
 #### Read and clean the Mr. Trash Wheel sheet
 ```{r}
 mr_trash_wheel = 
-  read_excel("./data/HealthyHarborWaterWheelTotals2018-7-28.xlsx",
+  read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
              sheet = "Mr. Trash Wheel",
-             range = "A2:N338") %>% 
+             range = "A2:N408") %>% 
   janitor::clean_names() %>%
   drop_na(dumpster) %>% 
   mutate(sports_balls = round(sports_balls, digits = 0),
@@ -31,7 +31,7 @@ mr_trash_wheel =
 #### Read and clean precipitation data for 2017 and 2018
 ```{r}
 prec_2017 = 
-  read_excel("./data/HealthyHarborWaterWheelTotals2018-7-28.xlsx",
+    read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
              sheet = "2017 Precipitation",
              range = "A2:B14") %>% 
   janitor::clean_names() %>%
@@ -40,7 +40,7 @@ prec_2017 =
   drop_na() 
 
 prec_2018 = 
-  read_excel("./data/HealthyHarborWaterWheelTotals2018-7-28.xlsx",
+    read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
              sheet = "2018 Precipitation",
              range = "A2:B14") %>% 
   janitor::clean_names() %>% 
@@ -53,12 +53,12 @@ prec_2017_2018 = bind_rows(prec_2017 , prec_2018)
 ```
 
 #### Interpretation
-There are `r nrow(mr_trash_wheel)` observations and `r ncol(mr_trash_wheel)` variables in `mr_trash_wheel` dataset. This dataset has the information on the dumpter number, date of collection, amount of total litter (weight and volume), litter type and the number of homes powered by trash. In my opinion, the amount of total litter, litter type and homes powered are most important.
-The key variables are ``r colnames(mr_trash_wheel[5:14])``. 
+There are `r nrow(mr_trash_wheel)` observations and `r ncol(mr_trash_wheel)` variables in `mr_trash_wheel` dataset. This dataset has the information on the dumpter number, date of collection, amount of total litter (weight and volume), litter type and the number of homes powered by trash. In my opinion, the amount of total litter, litter type and homes powered are most important for further research.
+The key variables for further research are ``r colnames(mr_trash_wheel[5:14])``. 
 The median number of sports balls in a dumpster in 2017 was `r median(pull(filter(mr_trash_wheel, year == "2017"), sports_balls))`.
 
 There are `r nrow(prec_2017_2018)` observations and `r ncol(prec_2017_2018)` variables in `prec_2017_2018` dataset. This dataset shows the total precipitation in the corresponding month and year.
-The key variables are ``r colnames(prec_2017_2018[2])``. 
+The key variables for further research are ``r colnames(prec_2017_2018[2])``, and I use `year` and `month` as the key to tidy the dataset.
 The total precipitation in 2018 was `r sum(pull(filter(prec_2017_2018, year == "2018"), total))`.
 
 ## Problem 2
@@ -71,7 +71,7 @@ pols_month =
          month = as.numeric(month),
          month = month.name[month],
          president = factor(prez_dem, 
-                            levels = c("gop"  = 1, "dem" = 0),
+                            levels = c("gop"  = 0, "dem" = 1),
                             labels = c("gop","dem"))) %>% 
   select(-day, -prez_gop, -prez_dem)
 ```
@@ -105,16 +105,16 @@ pols_snp_unemp = left_join(pols_snp, unemployment, by = c("year","month"))
 
 #### Interpretation
 There are `r nrow(pols_month)` observations and `r ncol(pols_month)` variables in `pols_month` dataset. This dataset shows the president's political party and the number of national politicians who are democratic or republican at any given time.
-The key variables are ``r colnames(pols_month[3:9])``. The range of year is from `r min(pull(pols_month, year))` to `r max(pull(pols_month, year))`.
+The key variables for further research are ``r colnames(pols_month[3:9])``. The range of year is from `r min(pull(pols_month, year))` to `r max(pull(pols_month, year))`.
 
 There are `r nrow(snp)` observations and `r ncol(snp)` variables in `snp` dataset. This dataset is related to Standard & Poor’s stock market index (S&P) at any given time.
-The key variables are ``r colnames(snp[3])``. The range of year is from `r min(pull(snp, year))` to `r max(pull(snp, year))`.
+The key variables for research are ``r colnames(snp[3])``. The range of year is from `r min(pull(snp, year))` to `r max(pull(snp, year))`.
 
 There are `r nrow(unemployment)` observations and `r ncol(unemployment)` variables in `unemployment` dataset. This dataset shows unemployment percentage at any given time.
-The key variables are ``r colnames(unemployment[3])``. The range of year is from `r min(pull(unemployment, year))` to `r max(pull(unemployment, year))`.
+The key variables for further research are ``r colnames(unemployment[3])``. The range of year is from `r min(pull(unemployment, year))` to `r max(pull(unemployment, year))`.
 
 There are `r nrow(pols_snp_unemp)` observations and `r ncol(pols_snp_unemp)` variables in `pols_snp_unemp` **resulting dataset**. 
-The key variables are ``r colnames(pols_snp_unemp[3:11])``. The range of year is from `r min(pull(pols_snp_unemp, year))` to `r max(pull(pols_snp_unemp, year))`.
+The key variables for furthre research are ``r colnames(pols_snp_unemp[3:11])``, and I use `year` and `month` as the key to tidy the dataset. The range of year is from `r min(pull(pols_snp_unemp, year))` to `r max(pull(pols_snp_unemp, year))`.
 
 ## Problem 3
 #### Read and clean baby_names data
@@ -162,8 +162,10 @@ baby_names %>%
   geom_text_repel(aes(label = ifelse(rank <= 15, as.character(childs_first_name),'')),
                   box.padding   = 0.5,
                   point.padding = 0.5) +
-  labs(title = "Figure 1. The number of children with a name against the rank in popularity ",
-          subtitle = "for male, white non-hispanic children born in 2016") +
+  labs(title = "Figure 1. The number of children with a name against the rank in popularity ", 
+       x = "The rank in popularity",
+       y = "The number of children",
+       subtitle = "for male, white non-hispanic children born in 2016") +
   theme(plot.subtitle = element_text(hjust = 0.5))
 
 ```
