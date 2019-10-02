@@ -18,9 +18,9 @@ library(ggrepel)
 #### Read and clean the Mr. Trash Wheel sheet
 ```{r}
 mr_trash_wheel = 
-  read_excel("./data/HealthyHarborWaterWheelTotals2018-7-28.xlsx",
+  read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
              sheet = "Mr. Trash Wheel",
-             range = "A2:N338") %>% 
+             range = "A2:N408") %>% 
   janitor::clean_names() %>%
   drop_na(dumpster) %>% 
   mutate(sports_balls = round(sports_balls, digits = 0),
@@ -31,7 +31,7 @@ mr_trash_wheel =
 #### Read and clean precipitation data for 2017 and 2018
 ```{r}
 prec_2017 = 
-  read_excel("./data/HealthyHarborWaterWheelTotals2018-7-28.xlsx",
+    read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
              sheet = "2017 Precipitation",
              range = "A2:B14") %>% 
   janitor::clean_names() %>%
@@ -40,7 +40,7 @@ prec_2017 =
   drop_na() 
 
 prec_2018 = 
-  read_excel("./data/HealthyHarborWaterWheelTotals2018-7-28.xlsx",
+    read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
              sheet = "2018 Precipitation",
              range = "A2:B14") %>% 
   janitor::clean_names() %>% 
@@ -71,7 +71,7 @@ pols_month =
          month = as.numeric(month),
          month = month.name[month],
          president = factor(prez_dem, 
-                            levels = c("gop"  = 1, "dem" = 0),
+                            levels = c("gop"  = 0, "dem" = 1),
                             labels = c("gop","dem"))) %>% 
   select(-day, -prez_gop, -prez_dem)
 ```
