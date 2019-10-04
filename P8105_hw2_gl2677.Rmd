@@ -114,7 +114,7 @@ There are `r nrow(unemployment)` observations and `r ncol(unemployment)` variabl
 The key variables for further research are ``r colnames(unemployment[3])``. The range of year is from `r min(pull(unemployment, year))` to `r max(pull(unemployment, year))`.
 
 There are `r nrow(pols_snp_unemp)` observations and `r ncol(pols_snp_unemp)` variables in `pols_snp_unemp` **resulting dataset**. 
-The key variables for furthre research are ``r colnames(pols_snp_unemp[3:11])``, and I use `year` and `month` as the key to tidy the dataset. The range of year is from `r min(pull(pols_snp_unemp, year))` to `r max(pull(pols_snp_unemp, year))`.
+The key variables for further research are ``r colnames(pols_snp_unemp[3:11])``, and I use `year` and `month` as the key to tidy the dataset. The range of year is from `r min(pull(pols_snp_unemp, year))` to `r max(pull(pols_snp_unemp, year))`.
 
 ## Problem 3
 #### Read and clean baby_names data
