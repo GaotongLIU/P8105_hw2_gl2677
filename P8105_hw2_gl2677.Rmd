@@ -167,5 +167,4 @@ baby_names %>%
        y = "The number of children",
        subtitle = "for male, white non-hispanic children born in 2016") +
   theme(plot.subtitle = element_text(hjust = 0.5))
-
 ```
