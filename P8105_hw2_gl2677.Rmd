@@ -14,7 +14,7 @@ library(readxl)
 library(ggrepel)
 ```
 
-## Problem 0
+## Problem 1
 #### Read and clean the Mr. Trash Wheel sheet
 ```{r}
 mr_trash_wheel = 
@@ -167,5 +167,4 @@ baby_names %>%
        y = "The number of children",
        subtitle = "for male, white non-hispanic children born in 2016") +
   theme(plot.subtitle = element_text(hjust = 0.5))
-
 ```
